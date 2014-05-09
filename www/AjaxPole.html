@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+	<script>
+		$(document).ready(function(){
+			$.ajaxSetup({ cache: false });
+
+		  get_fb();
+		  setInterval(function(){get_fb();}, 5000);
+		  
+		  $("#Cmd").keyup(function(event){
+		    if(event.keyCode == 13){
+		        $("button").click();
+		    }
+		  });
+		  
+		  $("button").click(function(){
+			/*
+ 			$.post("http://192.168.1.12:91/arduino",
+		  	{
+    		    		code:$("#Cmd").val()
+		  	});
+			*/
+			
+			
+			$.ajax({
+				url: "http://192.168.1.27:91/arduino",
+				dataType: "html",
+				type: "POST",
+				data: {code:$("#Cmd").val(),addReturnChar:$("#AddReturnChar").is(':checked')},
+				success : function(){
+					get_fb();
+					},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					//console.log(xhr.statusText);
+					//console.log(textStatus);
+					//console.log(error);
+					alert("Check console");	
+					}
+				
+			});	
+			
+			clear_fields();
+			
+		
+		  });
+		  
+		});
+
+		function get_fb(){
+			$.ajax({url:"history.txt",success:function(result){
+			  //$("#CmdDisplay").html($("<pre />").text(result));
+			  $("#scrollabletextbox").val(result);
+			  //alert($("#scrollabletextbox")[0].scrollHeight);	
+			  $("#scrollabletextbox").scrollTop($("#scrollabletextbox")[0].scrollHeight);
+			}});
+		}
+
+		function clear_fields(){
+			$('#Cmd').val('');
+		}
+	</script>
+
+	<style>
+		#MainDiv {
+			width:500px;
+			overflow: hidden;
+			margin-left: auto ;
+			margin-right: auto ;
+		}
+		#CmdDisplay {
+			background-color:Black;
+			width:500px;
+			color:white;
+		}
+		#scrollabletextbox {
+			background-color:Black;
+			color:white;
+			height:300px;
+			width:490px;
+			align:centre;
+		}
+		#Cmd {
+			width:440px;
+		}
+		#CmdSend {
+			width: 50px;
+			float: right;
+		}
+		#CmdHeader {
+			font-size:150%;
+			padding:10px;
+		}
+	</style>
+
+
+</head>
+<body>
+	<div id="MainDiv">
+		<div id="CmdHeader">
+			GRBL Command Prompt
+		</div>		
+		<div>
+			<textarea id="scrollabletextbox" name="note" readonly></textarea>
+		</div>
+		<input type="text" name="command" id="Cmd">
+		<input type="checkbox" name="AddReturnChar" id="AddReturnChar">
+		<button id="CmdSend">Send</button>
+	</div>
+</body>
+</html>

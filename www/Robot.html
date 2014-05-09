@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+	<script>
+		$(document).ready(function(){
+			$.ajaxSetup({ cache: false });
+			
+		var CurrentSpot = 0;
+
+
+		  $("button").click(function(){
+
+		  
+			if(this.id != 'Up' && this.id != 'Down' && this.id != 'Auto'  )
+			{
+				$.ajax({
+					url: "http://192.168.1.27:91/arduino",
+					dataType: "html",
+					type: "POST",
+					data: get_position(this.id)
+				});
+			}
+			
+			else
+			{
+
+				if (this.id == 'Auto')
+				{	
+					playsound();
+					CurrentSpot = 0;
+
+					var myVar=setInterval(function(){
+					CurrentSpot++;
+					
+							$.ajax({
+								url: "http://192.168.1.27:91/arduino",
+								dataType: "html",
+								type: "POST",
+								data: Spots[CurrentSpot]
+							});
+					
+					if(CurrentSpot==24)
+					{
+						clearInterval(myVar);
+						return;
+					}
+					},$("#dly").val());	
+					
+					
+				}
+			
+			
+				if(this.id == 'Up')
+				{
+					CurrentSpot++;
+					if(CurrentSpot > 24) 
+					{
+						CurrentSpot = 24;
+					}
+				}
+				else
+				{
+					CurrentSpot--;
+					if(CurrentSpot < 1) 
+					{
+						CurrentSpot = 1;
+					}
+				}
+				$.ajax({
+					url: "http://192.168.1.27:91/arduino",
+					dataType: "html",
+					type: "POST",
+					data: Spots[CurrentSpot]
+				});
+			}
+		  });
+		});
+		
+		function playsound(){
+			 var audioElement = document.createElement('audio');
+			audioElement.setAttribute('src', 'http://127.0.0.1:91/alarm.mp3');
+			audioElement.setAttribute('autoplay', 'autoplay');
+			//audioElement.load()
+			$.get();
+			audioElement.addEventListener("load", function() {
+			audioElement.play();
+			}, true);
+		}
+		
+		function get_position(spot){
+			switch (spot) {
+				case 'Home': return Spots[0];
+				case 'Spot01': return Spots[1];
+				case 'Spot02': return Spots[2];
+				case 'Spot03': return Spots[3];
+				case 'Spot04': return Spots[4];
+				case 'Spot05': return Spots[5];
+				case 'Spot06': return Spots[6];
+				case 'Spot07': return Spots[7];
+				case 'Spot08': return Spots[8];
+				case 'Spot09': return Spots[9];
+				case 'Spot10': return Spots[10];
+				case 'Spot11': return Spots[11];
+				case 'Spot12': return Spots[12];
+				case 'Spot13': return Spots[13];
+				case 'Spot14': return Spots[14];
+				case 'Spot15': return Spots[15];
+				case 'Spot16': return Spots[16];
+				case 'Spot17': return Spots[17];
+				case 'Spot18': return Spots[18];
+				case 'Spot19': return Spots[19];
+				case 'Spot20': return Spots[20];
+				case 'Spot21': return Spots[21];
+				case 'Spot22': return Spots[22];
+				case 'Spot23': return Spots[23];
+				case 'Spot24': return Spots[24];
+			}
+		}
+		
+		var Spots = [];
+		
+		Spots[0] = {code:'$H',addReturnChar:'true'};
+		Spots[1] = {code:'g0 x0.1 y0.1',addReturnChar:'true'};
+		Spots[2] = {code:'g0 x1.25 y2.5',addReturnChar:'true'};
+		Spots[3] = {code:'g0 x1.25 y5.8',addReturnChar:'true'};
+		Spots[4] = {code:'g0 x0.1 y6.5',addReturnChar:'true'};
+		Spots[5] = {code:'g0 x1.25 y9.0',addReturnChar:'true'};
+		Spots[6] = {code:'g0 x1.25 y12.1',addReturnChar:'true'};
+		Spots[7] = {code:'g0 x0.1 y12.7',addReturnChar:'true'};
+		Spots[8] = {code:'g0 x1.25 y15.4',addReturnChar:'true'};
+		Spots[9] = {code:'g0 x1.25 y18.5',addReturnChar:'true'};
+		Spots[10] = {code:'g0 x0.1 y19.2',addReturnChar:'true'};
+		Spots[11] = {code:'g0 x1.23 y21.8',addReturnChar:'true'};
+		Spots[12] = {code:'g0 x1.21 y25.2',addReturnChar:'true'};
+		Spots[13] = {code:'g0 x0.1 y25.8',addReturnChar:'true'};
+		Spots[14] = {code:'g0 x1.21 y28.2',addReturnChar:'true'};
+		Spots[15] = {code:'g0 x1.21 y31.3',addReturnChar:'true'};
+		Spots[16] = {code:'g0 x0.1 y32.3',addReturnChar:'true'};
+		Spots[17] = {code:'g0 x1.21 y34.5',addReturnChar:'true'};
+		Spots[18] = {code:'g0 x1.21 y37.7',addReturnChar:'true'};
+		Spots[19] = {code:'g0 x0.1 y38.7',addReturnChar:'true'};
+		Spots[20] = {code:'g0 x1.21 y40.9',addReturnChar:'true'};
+		Spots[21] = {code:'g0 x1.21 y44.2',addReturnChar:'true'};
+		Spots[22] = {code:'g0 x0.1 y45.0',addReturnChar:'true'};
+		Spots[23] = {code:'g0 x1.25 y47.4',addReturnChar:'true'};
+		Spots[24] = {code:'g0 x1.25 y50.6',addReturnChar:'true'};
+		
+
+	</script>
+
+	<style>
+	.btn {
+		display:inline-block;
+		min-width: 50px;
+		width: 100px;
+		height: 100px;	
+		padding:5px 10px;
+	}
+	</style>
+
+
+</head>
+<body>
+	<div id="MainDiv">
+		<div id="CmdHeader">
+			Robot Mark I
+		</div>		
+		<div>
+			<button class="btn" id="Up">Up</button>
+			<button class="btn" id="Down">Down</button>
+			<button class="btn" id="Auto">Auto</button>
+			<input type="text" name="Delay" id="dly" value=2000>
+		</div>
+		<br>
+		<div>
+		<button id="Home">Home</button>
+		</div>
+		<br>
+		<div>
+		<button id="Spot01">Spot01</button>
+		<button id="Spot02">Spot02</button>
+		<button id="Spot03">Spot03</button>
+		<button id="Spot04">Spot04</button>
+		</div>
+		<div>
+		<button id="Spot05">Spot05</button>
+		<button id="Spot06">Spot06</button>
+		<button id="Spot07">Spot07</button>
+		<button id="Spot08">Spot08</button>
+		</div>
+		<div>
+		<button id="Spot09">Spot09</button>
+		<button id="Spot10">Spot10</button>
+		<button id="Spot11">Spot11</button>
+		<button id="Spot12">Spot12</button>
+		</div>
+		<div>
+		<button id="Spot13">Spot13</button>
+		<button id="Spot14">Spot14</button>
+		<button id="Spot15">Spot15</button>
+		<button id="Spot16">Spot16</button>
+		</div>
+		<div>
+		<button id="Spot17">Spot17</button>
+		<button id="Spot18">Spot18</button>
+		<button id="Spot19">Spot19</button>
+		<button id="Spot20">Spot20</button>
+		</div>
+		<div>
+		<button id="Spot21">Spot21</button>
+		<button id="Spot22">Spot22</button>
+		<button id="Spot23">Spot23</button>
+		<button id="Spot24">Spot24</button>
+		</div>
+	</div>
+</body>
+</html>
