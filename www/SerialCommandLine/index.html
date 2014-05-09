@@ -18,16 +18,10 @@
 		  });
 		  
 		  $("button").click(function(){
-			/*
- 			$.post("http://192.168.1.12:91/arduino",
-		  	{
-    		    		code:$("#Cmd").val()
-		  	});
-			*/
-			
+		
 			
 			$.ajax({
-				url: "http://192.168.1.27:91/arduino",
+				url: "http://127.0.0.1:91/arduino", 
 				dataType: "html",
 				type: "POST",
 				data: {code:$("#Cmd").val(),addReturnChar:$("#AddReturnChar").is(':checked')},
@@ -35,9 +29,9 @@
 					get_fb();
 					},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					//console.log(xhr.statusText);
-					//console.log(textStatus);
-					//console.log(error);
+					console.log(xhr.statusText);
+					console.log(textStatus);
+					console.log(error);
 					alert("Check console");	
 					}
 				
@@ -51,7 +45,7 @@
 		});
 
 		function get_fb(){
-			$.ajax({url:"history.txt",success:function(result){
+			$.ajax({url:"http://127.0.0.1:91/WWW/history.txt",success:function(result){
 			  //$("#CmdDisplay").html($("<pre />").text(result));
 			  $("#scrollabletextbox").val(result);
 			  //alert($("#scrollabletextbox")[0].scrollHeight);	
