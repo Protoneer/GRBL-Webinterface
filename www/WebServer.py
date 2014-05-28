@@ -1,3 +1,4 @@
+from SimpleHTTPServer import SimpleHTTPRequestHandler
 import cgi
 import serial
 import re
@@ -57,7 +58,7 @@ class MyHandler(SimpleHTTPRequestHandler):
             return
         return do_GET()
 
-    def do_GET(self):
+    def do_get(self):
         if wwwHistoryFileName in self.path:
             print("Reading...")
             out = ''
