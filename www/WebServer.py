@@ -12,8 +12,6 @@ wwwPort = 91
 wwwHostName = ''
 wwwHistoryFileName = 'WWW/history.txt' # Stores results from commands run
 
-
-
 #from BaseHTTPServer import HTTPServer
 from http.server import HTTPServer
 #from SimpleHTTPServer import SimpleHTTPRequestHandler
@@ -23,7 +21,6 @@ def writeToFile(filename,stringToAppend):
     f = open(filename,'a')
     f.write(re.sub(r"\r", "", stringToAppend))
     f.close()
-
 
 class MyHandler(SimpleHTTPRequestHandler):
 
